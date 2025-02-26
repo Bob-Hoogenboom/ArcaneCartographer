@@ -572,13 +572,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44d6b4f3a256204469818daa5a6a7665, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  visualizer: {fileID: 0}
+  visualizer: {fileID: 1625183859}
   startPos: {x: 0, y: 0}
-  _drunkardsWalkParameters: {fileID: 0}
-  corridorLength: 14
-  corridorCount: 5
-  roomPercent: 0.8
-  DrunkardWalkParameters: {fileID: 0}
+  drunkardsWalkParameters: {fileID: 11400000, guid: 86d26eb054ff79b49a096001a0900044,
+    type: 2}
+  corridorLength: 20
+  corridorCount: 10
+  roomPercent: 0.482
 --- !u!1 &1070808169
 GameObject:
   m_ObjectHideFlags: 0
@@ -859,7 +859,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   visualizer: {fileID: 1625183859}
   startPos: {x: 0, y: 0}
-  _drunkardsWalkParameters: {fileID: 11400000, guid: 813cedd05bfff9f41a5d9fb8099ae01c,
+  drunkardsWalkParameters: {fileID: 11400000, guid: d47200bb9ef0c804f934e5ba0d690726,
     type: 2}
 --- !u!4 &1815655700
 Transform:

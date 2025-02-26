@@ -15,5 +15,10 @@ public abstract class AbstractDungeonGenerator : MonoBehaviour
         RunProceduralGeneration();
     }
 
+    public void DeleteDungeon()
+    {
+        visualizer.Clear();
+    }
+
     protected abstract void RunProceduralGeneration();
 }
