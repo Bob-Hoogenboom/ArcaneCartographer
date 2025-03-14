@@ -18,23 +18,28 @@ public class CorridorFirstDungeonGeneratior : DrunkardsWalkGenerator
     [Range(1,3)]
     private int corridorWidth = 1;
 
+
     protected override void RunProceduralGeneration()
     {
-        CorridorFirstGeneration();
+        // Ensure the seed is initialized from GameManager, with a fallback default seed if null
+        int seed = GameManager.Instance != null ? GameManager.Instance.Seed : 12345;  // Default seed 12345 if null
+        rng = new System.Random(seed);
+
+        CorridorFirstGeneration(rng);
     }
 
-    private void CorridorFirstGeneration()
+    private void CorridorFirstGeneration(System.Random seed)
     {
         HashSet<Vector2Int> floorPositions = new HashSet<Vector2Int>();
         HashSet<Vector2Int> potentialRoomPositions = new HashSet<Vector2Int>();
 
-        List<List<Vector2Int>> corridors = CreateCorridors(floorPositions, potentialRoomPositions);
+        List<List<Vector2Int>> corridors = CreateCorridors(floorPositions, potentialRoomPositions, seed);
 
-        HashSet<Vector2Int> roomPositions = CreateRooms(potentialRoomPositions);
+        HashSet<Vector2Int> roomPositions = CreateRooms(potentialRoomPositions, seed);
 
         List<Vector2Int> deadEnds = FindAllDeadEnds(floorPositions);
 
-        CreateRoomsAtDeadEnds(deadEnds, roomPositions);
+        CreateRoomsAtDeadEnds(deadEnds, roomPositions, seed);
 
         floorPositions.UnionWith(roomPositions);
 
@@ -52,7 +57,7 @@ public class CorridorFirstDungeonGeneratior : DrunkardsWalkGenerator
         WallGenerator.CreateWalls(floorPositions, visualizer);
     }
 
-    private List<List<Vector2Int>> CreateCorridors(HashSet<Vector2Int> floorPositions, HashSet<Vector2Int> potentialRoomPositions)
+    private List<List<Vector2Int>> CreateCorridors(HashSet<Vector2Int> floorPositions, HashSet<Vector2Int> potentialRoomPositions, System.Random seed)
     {
         var currentPos = startPos;
         potentialRoomPositions.Add(currentPos);
@@ -61,7 +66,7 @@ public class CorridorFirstDungeonGeneratior : DrunkardsWalkGenerator
 
         for (int i = 0; i < corridorCount; i++) 
         {
-            var corridor = DrunkardsWalkAlgorithm.DrunkardsWalkCorridor(currentPos, corridorLength);
+            var corridor = DrunkardsWalkAlgorithm.DrunkardsWalkCorridor(currentPos, corridorLength, seed);
             corridors.Add(corridor);
             currentPos = corridor[corridor.Count - 1];
             potentialRoomPositions.Add(currentPos);
@@ -131,18 +136,18 @@ public class CorridorFirstDungeonGeneratior : DrunkardsWalkGenerator
         return Vector2Int.zero;
     }
 
-    private HashSet<Vector2Int> CreateRooms(HashSet<Vector2Int> potentialRoomPositions)
+    private HashSet<Vector2Int> CreateRooms(HashSet<Vector2Int> potentialRoomPositions, System.Random seed)
     {
         HashSet<Vector2Int> roomPositions = new HashSet<Vector2Int>();
         int roomCount = Mathf.RoundToInt(potentialRoomPositions.Count * roomPercent);
 
         //Randomly sort the potentialRooms
         //Create a 'Global Unique IDentifier'(GUID) for each potential room
-        List<Vector2Int> roomsToCreate = potentialRoomPositions.OrderBy(x => Guid.NewGuid()).Take(roomCount).ToList();
+        List<Vector2Int> roomsToCreate = potentialRoomPositions.OrderBy(x => rng.Next()).Take(roomCount).ToList();
 
         foreach (var roomPos in roomsToCreate)
         {
-            var roomFloor = RunDrunkardsWalk(drunkardsWalkParameters, roomPos);
+            var roomFloor = RunDrunkardsWalk(drunkardsWalkParameters, roomPos, seed);
             roomPositions.UnionWith(roomFloor); //Avoid repetitions in collection
         }
         return roomPositions;
@@ -170,13 +175,13 @@ public class CorridorFirstDungeonGeneratior : DrunkardsWalkGenerator
         return deadEnds;
     }
 
-    private void CreateRoomsAtDeadEnds(List<Vector2Int> deadEnds, HashSet<Vector2Int> roomFloors)
+    private void CreateRoomsAtDeadEnds(List<Vector2Int> deadEnds, HashSet<Vector2Int> roomFloors, System.Random seed)
     {
         foreach (var pos in deadEnds)
         {
             if(roomFloors.Contains(pos) == false)
             {
-                var room = RunDrunkardsWalk(drunkardsWalkParameters, pos);
+                var room = RunDrunkardsWalk(drunkardsWalkParameters, pos, seed);
                 roomFloors.UnionWith(room);
             }
         }

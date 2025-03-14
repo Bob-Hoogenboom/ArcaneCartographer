@@ -1,5 +1,4 @@
 using System.IO;
-using UnityEditorInternal;
 using UnityEngine;
 
 
@@ -28,11 +27,9 @@ public class SaveManager : MonoBehaviour
         };
 
         string json = JsonUtility.ToJson(saveObject);
-        Debug.Log(json);
 
+        //TODO Remove after Debugging
         SaveObject loadedSaveObject = JsonUtility.FromJson<SaveObject>(json);
-        Debug.Log(loadedSaveObject.seed);
-
     }
 
     public void Save()

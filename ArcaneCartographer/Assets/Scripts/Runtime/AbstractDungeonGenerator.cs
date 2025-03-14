@@ -8,6 +8,8 @@ public abstract class AbstractDungeonGenerator : MonoBehaviour
     protected DungeonVisualizer visualizer = null;
     [SerializeField]
     protected Vector2Int startPos = Vector2Int.zero;
+   
+
 
     public void GenerateDungeon()
     {

@@ -1,10 +1,11 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using UnityEngine;
 
 public static class DrunkardsWalkAlgorithm
 {
-    public static HashSet<Vector2Int> SimpleDrunkardsWalk(Vector2Int startpos, int walkLength)
+    public static HashSet<Vector2Int> SimpleDrunkardsWalk(Vector2Int startpos, int walkLength, System.Random seed)
     {
         HashSet<Vector2Int> path = new HashSet<Vector2Int>();
         
@@ -13,18 +14,18 @@ public static class DrunkardsWalkAlgorithm
 
         for (int i = 0; i < walkLength; i++)
         {
-            Vector2Int newPos = previousPos + Direction2D.GetRandomCardinalDir();
+            Vector2Int newPos = previousPos + Direction2D.GetRandomCardinalDir(seed);
             path.Add(newPos);
             previousPos = newPos;
         }
         return path;
     }   
     
-    public static List<Vector2Int> DrunkardsWalkCorridor(Vector2Int startPos, int corridorLength)
+    public static List<Vector2Int> DrunkardsWalkCorridor(Vector2Int startPos, int corridorLength, System.Random seed)
     {
-        List<Vector2Int> corridor = new List<Vector2Int>(); 
-        var direction = Direction2D.GetRandomCardinalDir();
-        var currentPos = startPos;
+        List<Vector2Int> corridor = new List<Vector2Int>();
+        Vector2Int direction = Direction2D.GetRandomCardinalDir(seed);
+        Vector2Int currentPos = startPos;
 
         corridor.Add(currentPos);
         for (int i = 0; i < corridorLength;i++) 
@@ -47,8 +48,8 @@ public static class Direction2D
         new Vector2Int(-1,0) //left
     };
 
-    public static Vector2Int GetRandomCardinalDir()
+    public static Vector2Int GetRandomCardinalDir(System.Random seed)
     {
-        return cardinalDirectionList[Random.Range(0, cardinalDirectionList.Count)];
+        return cardinalDirectionList[seed.Next(0, cardinalDirectionList.Count)];
     }
 }

@@ -1,6 +1,4 @@
 using System;
-using System.IO;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -16,9 +14,6 @@ public class GameManager : MonoBehaviour
             if (_seed != value) // Only trigger event if value actually changes
             {
                 _seed = value;
-                Debug.Log(_seed);
-
-
                 OnSeedChanged?.Invoke(_seed);
             }
         }
@@ -33,7 +28,6 @@ public class GameManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
-            GenerateSeed();
         }
         else
         {
