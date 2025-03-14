@@ -3,8 +3,12 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    public DrunkardsWalkData dungeonData;
+
     //Seed 
     public event Action<int> OnSeedChanged;
+
+    [SerializeField]
     private int _seed;
     public int Seed
     {

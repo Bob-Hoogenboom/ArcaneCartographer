@@ -18,11 +18,13 @@ public class CorridorFirstDungeonGeneratior : DrunkardsWalkGenerator
     [Range(1,3)]
     private int corridorWidth = 1;
 
+    [SerializeField]
+    private int editorTestSeed = 12345;
 
     protected override void RunProceduralGeneration()
     {
         // Ensure the seed is initialized from GameManager, with a fallback default seed if null
-        int seed = GameManager.Instance != null ? GameManager.Instance.Seed : 12345;  // Default seed 12345 if null
+        int seed = GameManager.Instance != null ? GameManager.Instance.Seed : editorTestSeed;// Default seed 12345 if null
         rng = new System.Random(seed);
 
         CorridorFirstGeneration(rng);
