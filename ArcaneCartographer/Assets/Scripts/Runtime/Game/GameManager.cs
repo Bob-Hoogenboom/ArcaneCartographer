@@ -1,43 +1,48 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using System.IO;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    private int _currentSeed;
+    //Seed 
+    public event Action<int> OnSeedChanged;
+    private int _seed;
+    public int Seed
+    {
+        get => _seed;
+        set
+        {
+            if (_seed != value) // Only trigger event if value actually changes
+            {
+                _seed = value;
+                Debug.Log(_seed);
+
+
+                OnSeedChanged?.Invoke(_seed);
+            }
+        }
+    }
+
+    //Singleton GameManager
+    public static GameManager Instance { get;  private set; }
 
     private void Awake()
     {
-        //For Debugging
-        GenerateSeed();
-
-        SaveObject saveObject = new SaveObject
+        if (Instance == null)
         {
-            seed = 0
-        };
-
-        string json = JsonUtility.ToJson(saveObject);
-        Debug.Log(json);
-
-        SaveObject loadedSaveObject = JsonUtility.FromJson<SaveObject>(json);
-        Debug.Log(loadedSaveObject.seed);
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+            GenerateSeed();
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 
-
-    private void GenerateSeed()
+    public void GenerateSeed()
     {
-        _currentSeed = UnityEngine.Random.Range(0, int.MaxValue);
-    }
-
-    private void Save()
-    {
-        SaveObject saveObject = new SaveObject
-        {
-            seed = _currentSeed
-        };
-        string json = JsonUtility.ToJson(saveObject);
-
-        File.WriteAllText(Application.dataPath + "/save.txt", json);
+        Seed = UnityEngine.Random.Range(0, int.MaxValue);
     }
 }
