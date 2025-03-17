@@ -5,7 +5,7 @@ using UnityEngine;
 public class SaveManager : MonoBehaviour
 {
     public static SaveManager Instance { get; private set; }
-
+    private readonly string SAVE_FOLDER = Application.dataPath + "/SaveData/";
 
     private void Awake()
     {
@@ -20,16 +20,11 @@ public class SaveManager : MonoBehaviour
             Destroy(gameObject);
         }
 
-        //Set-up Save System
-        SaveObject saveObject = new SaveObject
+        if (!Directory.Exists(SAVE_FOLDER))
         {
-            seed = 0
-        };
-
-        string json = JsonUtility.ToJson(saveObject);
-
-        //TODO Remove after Debugging
-        SaveObject loadedSaveObject = JsonUtility.FromJson<SaveObject>(json);
+            Directory.CreateDirectory(SAVE_FOLDER);
+        }
+        
     }
 
     public void Save()
@@ -40,14 +35,14 @@ public class SaveManager : MonoBehaviour
         };
         string json = JsonUtility.ToJson(saveObject);
 
-        File.WriteAllText(Application.dataPath + "/save.txt", json);
+        File.WriteAllText(SAVE_FOLDER + "/save.txt", json);
     }
 
     public void LoadSaveFile()
     {
-        if(File.Exists(Application.dataPath + "/save.txt"))
+        if(File.Exists(SAVE_FOLDER + "/save.txt"))
         {
-            string saveString = File.ReadAllText(Application.dataPath + "/save.txt");
+            string saveString = File.ReadAllText(SAVE_FOLDER + "/save.txt");
 
             SaveObject saveObject = JsonUtility.FromJson<SaveObject>(saveString);
 
