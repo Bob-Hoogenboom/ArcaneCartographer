@@ -8,14 +8,20 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private int _seed;
     [Space]
-    public int iterations = 10;
-    public int walkLength = 10;
-    public bool randomStart = true;
+    [SerializeField]
+    public int _iterations = 10;
+    [SerializeField]
+    public int _walkLength = 10;
+    [SerializeField]
+    public bool _randomStart = true;
 
-    //Actions:
+    //[Header("Delegate Actions")]
     public event Action<int> OnSeedChanged;
+    public event Action<string> OnValueSetterChanged;
     public Dictionary<string, Action<string>> valueSetters;
 
+    //[Header("Getters and Setters")]
+    #region Setters and getters
     public int Seed
     {
         get => _seed;
@@ -29,8 +35,49 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public int Iterations
+    {
+        get => _iterations;
+        set
+        {
+            if(_iterations != value)
+            {
+                _iterations = value;
+                OnValueSetterChanged?.Invoke(_iterations.ToString());
+            }
+        }
+    }
+
+    public int WalkLength
+    {
+        get => _walkLength;
+        set
+        {
+            if (_walkLength != value)
+            {
+                _walkLength = value;
+                OnValueSetterChanged.Invoke(_walkLength.ToString());
+            }
+        }
+    }
+    public bool RandomStart
+    {
+        get => _randomStart;
+        set
+        {
+            if(_randomStart != value)
+            {
+                _randomStart = value;
+                OnValueSetterChanged?.Invoke(_randomStart.ToString());
+            }
+        }
+    }
+
+    #endregion
+
     //Singleton GameManager
     public static GameManager Instance { get; private set; }
+
 
     private void Awake()
     {
@@ -46,9 +93,9 @@ public class GameManager : MonoBehaviour
 
         valueSetters = new Dictionary<string, Action<string>>()
         {
-            {"iterations", value => int.TryParse (value, out iterations )},
-            {"walkLength", value => int.TryParse (value, out walkLength )},
-            {"randomStart", value => bool.TryParse (value, out randomStart )},
+            {"iterations", value => int.TryParse (value, out _iterations )},
+            {"walkLength", value => int.TryParse (value, out _walkLength )},
+            {"randomStart", value => bool.TryParse (value, out _randomStart )},
         };
     }
 
@@ -69,5 +116,14 @@ public class GameManager : MonoBehaviour
         {
             Debug.LogWarning($"No variable found for key: {key}");
         }
+    }
+
+    public string GetValue(string key)
+    {
+        if (valueSetters.TryGetValue(key, out var getter))
+        {
+            return getter.ToString();
+        }
+        return "";
     }
 }

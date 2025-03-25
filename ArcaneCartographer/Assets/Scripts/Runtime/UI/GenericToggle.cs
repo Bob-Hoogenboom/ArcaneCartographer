@@ -11,6 +11,14 @@ public class GenericToggle : MonoBehaviour
     {
         if (_toggle == null) _toggle = GetComponent<Toggle>();
 
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.OnValueSetterChanged += OnValueChanged;
+            //Set input field to show the current seed at start
+            bool isOn = bool.Parse(GameManager.Instance.GetValue(valueKey));
+            _toggle.isOn = isOn;
+        }
+
         _toggle.onValueChanged.AddListener(UpdateGameManagerValue);
     }
 
@@ -20,6 +28,11 @@ public class GenericToggle : MonoBehaviour
         {
             GameManager.Instance.UpdateValue(valueKey, isOn.ToString()); // Convert bool to string
         }
+    }
+
+    private void OnValueChanged(string value)
+    {
+        _toggle.isOn = bool.Parse(value);
     }
 
     private void OnDestroy()

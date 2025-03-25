@@ -31,18 +31,18 @@ public class SaveManager : MonoBehaviour
         SaveObject saveObject = new SaveObject
         {
             seed = GameManager.Instance.Seed,
-            iterations = GameManager.Instance.iterations,
-            walkLength = GameManager.Instance.walkLength,
-            randomStart = GameManager.Instance.randomStart
+            iterations = GameManager.Instance.Iterations,
+            walkLength = GameManager.Instance.WalkLength,
+            randomStart = GameManager.Instance.RandomStart
         };
         string json = JsonUtility.ToJson(saveObject);
 
         File.WriteAllText(SAVE_FOLDER + "/save.txt", json);
 
         Debug.Log($"Saved: {GameManager.Instance.Seed} containing: " +
-            $"{GameManager.Instance.iterations} ," +
-            $"{GameManager.Instance.walkLength} ," +
-            $"{GameManager.Instance.randomStart}");
+            $"{GameManager.Instance.Iterations} ," +
+            $"{GameManager.Instance.WalkLength} ," +
+            $"{GameManager.Instance.RandomStart}");
     }
 
     public void LoadSaveFile()
@@ -54,9 +54,9 @@ public class SaveManager : MonoBehaviour
             SaveObject saveObject = JsonUtility.FromJson<SaveObject>(saveString);
 
             GameManager.Instance.Seed = saveObject.seed;
-            GameManager.Instance.iterations = saveObject.iterations;
-            GameManager.Instance.walkLength = saveObject.walkLength;
-            GameManager.Instance.randomStart = saveObject.randomStart;
+            GameManager.Instance.Iterations = saveObject.iterations;
+            GameManager.Instance.WalkLength = saveObject.walkLength;
+            GameManager.Instance.RandomStart = saveObject.randomStart;
 
             Debug.Log($"Loaded: {saveObject.seed} containing: " +
                 $"{saveObject.iterations} ," +

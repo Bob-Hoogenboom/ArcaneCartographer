@@ -28,12 +28,12 @@ public class DrunkardsWalkGenerator : AbstractDungeonGenerator
         Vector2Int currentPos = pos;
         HashSet<Vector2Int> floorPositions = new HashSet<Vector2Int>();
 
-        for (int i = 0; i < manager.iterations; i++)
+        for (int i = 0; i < manager._iterations; i++)
         {
-            HashSet<Vector2Int> path = DrunkardsWalkAlgorithm.SimpleDrunkardsWalk(currentPos, manager.walkLength, rng); // ✅ Pass rng
+            HashSet<Vector2Int> path = DrunkardsWalkAlgorithm.SimpleDrunkardsWalk(currentPos, manager._walkLength, rng); // ✅ Pass rng
             floorPositions.UnionWith(path);
 
-            if (manager.randomStart)
+            if (manager._randomStart)
             {
                 currentPos = floorPositions.ElementAt(rng.Next(0, floorPositions.Count)); // ✅ Use seeded RNG
             }
