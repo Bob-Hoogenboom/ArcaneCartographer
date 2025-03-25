@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -149,7 +148,7 @@ public class CorridorFirstDungeonGeneratior : DrunkardsWalkGenerator
 
         foreach (var roomPos in roomsToCreate)
         {
-            var roomFloor = RunDrunkardsWalk(drunkardsWalkParameters, roomPos, seed);
+            var roomFloor = RunDrunkardsWalk(GameManager.Instance, roomPos, seed);
             roomPositions.UnionWith(roomFloor); //Avoid repetitions in collection
         }
         return roomPositions;
@@ -183,7 +182,7 @@ public class CorridorFirstDungeonGeneratior : DrunkardsWalkGenerator
         {
             if(roomFloors.Contains(pos) == false)
             {
-                var room = RunDrunkardsWalk(drunkardsWalkParameters, pos, seed);
+                var room = RunDrunkardsWalk(GameManager.Instance, pos, seed);
                 roomFloors.UnionWith(room);
             }
         }

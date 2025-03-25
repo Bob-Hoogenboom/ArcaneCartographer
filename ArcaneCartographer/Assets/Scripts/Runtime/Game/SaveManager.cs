@@ -24,18 +24,25 @@ public class SaveManager : MonoBehaviour
         {
             Directory.CreateDirectory(SAVE_FOLDER);
         }
-        
     }
 
     public void Save()
     {
         SaveObject saveObject = new SaveObject
         {
-            seed = GameManager.Instance.Seed
+            seed = GameManager.Instance.Seed,
+            iterations = GameManager.Instance.iterations,
+            walkLength = GameManager.Instance.walkLength,
+            randomStart = GameManager.Instance.randomStart
         };
         string json = JsonUtility.ToJson(saveObject);
 
         File.WriteAllText(SAVE_FOLDER + "/save.txt", json);
+
+        Debug.Log($"Saved: {GameManager.Instance.Seed} containing: " +
+            $"{GameManager.Instance.iterations} ," +
+            $"{GameManager.Instance.walkLength} ," +
+            $"{GameManager.Instance.randomStart}");
     }
 
     public void LoadSaveFile()
@@ -47,6 +54,14 @@ public class SaveManager : MonoBehaviour
             SaveObject saveObject = JsonUtility.FromJson<SaveObject>(saveString);
 
             GameManager.Instance.Seed = saveObject.seed;
+            GameManager.Instance.iterations = saveObject.iterations;
+            GameManager.Instance.walkLength = saveObject.walkLength;
+            GameManager.Instance.randomStart = saveObject.randomStart;
+
+            Debug.Log($"Loaded: {saveObject.seed} containing: " +
+                $"{saveObject.iterations} ," +
+                $"{saveObject.walkLength} ," +
+                $"{saveObject.randomStart}");
         }
         else 
         {

@@ -6,13 +6,10 @@ public class SaveObject
     //dungeon variables:
     public int seed;
 
-    public Vector2 startpos;
-    public float roomPercent;
-    public int corridorLength;
-    public int corridorCount;
-    public int corridorWidth;
-
+    public int iterations;
+    public int walkLength;
+    public bool randomStart;
 
     //objects that have been placed
-    
+
 }

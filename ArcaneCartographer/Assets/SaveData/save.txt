@@ -1,1 +1,1 @@
-{"seed":395094440,"roomPercent":0.0,"corridorLength":0,"corridorCount":0,"corridorWidth":0}
+{"seed":1707912711,"iterations":67,"walkLength":54,"randomStart":true}

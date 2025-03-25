@@ -7,31 +7,33 @@ public class DrunkardsWalkGenerator : AbstractDungeonGenerator
     [SerializeField]
     protected DrunkardsWalkData drunkardsWalkParameters;
 
+    protected GameManager gameManager;
+
     [SerializeField]
     protected System.Random rng;
 
     protected override void RunProceduralGeneration()
     {
+        gameManager = GameManager.Instance;
 
-
-        HashSet<Vector2Int> floorPositions = RunDrunkardsWalk(drunkardsWalkParameters, startPos, rng);
+        HashSet<Vector2Int> floorPositions = RunDrunkardsWalk(gameManager, startPos, rng);
         visualizer.Clear();
         visualizer.PaintFloorTiles(floorPositions);
 
         WallGenerator.CreateWalls(floorPositions, visualizer);
     }
 
-    protected HashSet<Vector2Int> RunDrunkardsWalk(DrunkardsWalkData parameters, Vector2Int pos, System.Random rng)
+    protected HashSet<Vector2Int> RunDrunkardsWalk(GameManager manager, Vector2Int pos, System.Random rng)
     {
         Vector2Int currentPos = pos;
         HashSet<Vector2Int> floorPositions = new HashSet<Vector2Int>();
 
-        for (int i = 0; i < parameters.iterations; i++)
+        for (int i = 0; i < manager.iterations; i++)
         {
-            HashSet<Vector2Int> path = DrunkardsWalkAlgorithm.SimpleDrunkardsWalk(currentPos, parameters.walkLength, rng); // ✅ Pass rng
+            HashSet<Vector2Int> path = DrunkardsWalkAlgorithm.SimpleDrunkardsWalk(currentPos, manager.walkLength, rng); // ✅ Pass rng
             floorPositions.UnionWith(path);
 
-            if (parameters.startRandomEachIteration)
+            if (manager.randomStart)
             {
                 currentPos = floorPositions.ElementAt(rng.Next(0, floorPositions.Count)); // ✅ Use seeded RNG
             }
