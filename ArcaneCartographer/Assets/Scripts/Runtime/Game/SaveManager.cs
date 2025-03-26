@@ -1,11 +1,13 @@
-using System.IO;
 using UnityEngine;
 
 
 public class SaveManager : MonoBehaviour
 {
     public static SaveManager Instance { get; private set; }
-    private readonly string SAVE_FOLDER = Application.dataPath + "/SaveData/";
+
+    public GameObject buttonPrefab;
+    public Transform buttonParent;
+
 
     private void Awake()
     {
@@ -13,17 +15,14 @@ public class SaveManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
+            //DontDestroyOnLoad(gameObject);
         }
         else
         {
             Destroy(gameObject);
         }
 
-        if (!Directory.Exists(SAVE_FOLDER))
-        {
-            Directory.CreateDirectory(SAVE_FOLDER);
-        }
+        SaveSystem.Init();
     }
 
     public void Save()
@@ -37,7 +36,7 @@ public class SaveManager : MonoBehaviour
         };
         string json = JsonUtility.ToJson(saveObject);
 
-        File.WriteAllText(SAVE_FOLDER + "/save.txt", json);
+        SaveSystem.Save(json);
 
         Debug.Log($"Saved: {GameManager.Instance.Seed} containing: " +
             $"{GameManager.Instance.Iterations} ," +
@@ -45,12 +44,26 @@ public class SaveManager : MonoBehaviour
             $"{GameManager.Instance.RandomStart}");
     }
 
-    public void LoadSaveFile()
+    public void GetFileFromExplorer()
     {
-        if(File.Exists(SAVE_FOLDER + "/save.txt"))
-        {
-            string saveString = File.ReadAllText(SAVE_FOLDER + "/save.txt");
+        string saveString = SaveSystem.Load();
 
+        GameObject buttonObj = Instantiate(buttonPrefab, buttonParent);
+        //SaveObject saveObject = JsonUtility.FromJson<SaveObject>(saveString);
+
+        buttonObj.GetComponent<SaveFileUI>().savePath = saveString;
+    }
+
+
+    public void LoadFromFile(string jsonPath)
+    {
+        //TODO
+        //check json validate
+        //convert jsonpath to save data
+        string saveString = jsonPath;
+
+        if(saveString != null)
+        {
             SaveObject saveObject = JsonUtility.FromJson<SaveObject>(saveString);
 
             GameManager.Instance.Seed = saveObject.seed;
@@ -65,7 +78,7 @@ public class SaveManager : MonoBehaviour
         }
         else 
         {
-            Debug.Log("No Save");
+            Debug.Log($"No Save {saveString}");
         }
     }
 }

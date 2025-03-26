@@ -20,6 +20,11 @@ public class CorridorFirstDungeonGeneratior : DrunkardsWalkGenerator
     [SerializeField]
     private int editorTestSeed = 12345;
 
+    //Loads the dungeon from savefile*
+    private void Start()
+    {
+        RunProceduralGeneration();
+    }
     protected override void RunProceduralGeneration()
     {
         // Ensure the seed is initialized from GameManager, with a fallback default seed if null

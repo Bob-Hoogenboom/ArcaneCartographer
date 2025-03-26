@@ -15,8 +15,7 @@ public class GenericToggle : MonoBehaviour
         {
             GameManager.Instance.OnValueSetterChanged += OnValueChanged;
             //Set input field to show the current seed at start
-            bool isOn = bool.Parse(GameManager.Instance.GetValue(valueKey));
-            _toggle.isOn = isOn;
+            _toggle.isOn = GameManager.Instance.GetBoolValue(valueKey);
         }
 
         _toggle.onValueChanged.AddListener(UpdateGameManagerValue);
@@ -32,7 +31,7 @@ public class GenericToggle : MonoBehaviour
 
     private void OnValueChanged(string value)
     {
-        _toggle.isOn = bool.Parse(value);
+        _toggle.isOn = bool.TryParse(value, out bool result);
     }
 
     private void OnDestroy()

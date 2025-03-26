@@ -1,1 +1,1 @@
-{"seed":1707912711,"iterations":67,"walkLength":54,"randomStart":true}
+{"seed":0,"iterations":10,"walkLength":10,"randomStart":true}
