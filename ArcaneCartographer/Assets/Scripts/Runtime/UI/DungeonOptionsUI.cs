@@ -8,5 +8,11 @@ public class DungeonOptionsUI : MonoBehaviour
     public void BackToMainMenu(int sceneIndex)
     {
         SceneManager.LoadScene(sceneIndex);
-    }  
+    }
+
+
+    public void QuitButton()
+    {
+        Application.Quit();
+    }
 }

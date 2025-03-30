@@ -1,6 +1,7 @@
+using SFB;
 using System.IO;
-using UnityEditor;
 using UnityEngine;
+
 
 public static class SaveSystem
 {
@@ -18,24 +19,32 @@ public static class SaveSystem
     {
         //open file explorer
         int saveNumber = 1;
-        while (File.Exists($"save_{saveNumber}.txt"))
+        while (File.Exists($"Dungeon_{saveNumber}.txt"))
         {
             saveNumber++;
         }
 
-        File.WriteAllText($"{SAVE_FOLDER}save{saveNumber}.txt", saveString);
+        File.WriteAllText($"{SAVE_FOLDER}Dungeon_{saveNumber}.txt", saveString);
     }
     public static string Load()
     {
-        // open file explorer
-        string dataPath = EditorUtility.OpenFilePanel("Open Save File ",  Application.dataPath, "");
+        var extentions = new[]
+        {
+            new ExtensionFilter("json", "txt")
+        };
 
-        bool jsonOK = IsValidJson(dataPath);
+
+        // open file explorer
+        string[] dataPath = StandaloneFileBrowser.OpenFilePanel("Open Save File ",  SAVE_FOLDER, extentions, false);
+
+        if (dataPath.Length <= 0) return null;
+
+        bool jsonOK = IsValidJson(dataPath[0]);
         Debug.Log($"{jsonOK}");
 
         if (jsonOK)
         {
-            string saveString = File.ReadAllText($"{dataPath}");
+            string saveString = File.ReadAllText($"{dataPath[0]}");
             return saveString;
         }
         else

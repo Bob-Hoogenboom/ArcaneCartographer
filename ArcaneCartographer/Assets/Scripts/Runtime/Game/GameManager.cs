@@ -57,7 +57,7 @@ public class GameManager : MonoBehaviour
             if (_walkLength != value)
             {
                 _walkLength = value;
-                OnValueSetterChanged.Invoke(_walkLength.ToString());
+                OnValueSetterChanged?.Invoke(_walkLength.ToString());
             }
         }
     }

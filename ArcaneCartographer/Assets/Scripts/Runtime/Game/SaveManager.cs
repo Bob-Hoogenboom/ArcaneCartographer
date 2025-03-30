@@ -48,6 +48,8 @@ public class SaveManager : MonoBehaviour
     {
         string saveString = SaveSystem.Load();
 
+        if (saveString == null) return;
+
         GameObject buttonObj = Instantiate(buttonPrefab, buttonParent);
         //SaveObject saveObject = JsonUtility.FromJson<SaveObject>(saveString);
 
