@@ -6,7 +6,8 @@ public class DungeonTile : MonoBehaviour
 {
     public Vector2Int gridPos;
 
-    private void OnMouseDown()
+
+/*    private void OnMouseDown()
     {
         string selected = ObjectPlacer.Instance.GetSelectedObjectType();
         if (string.IsNullOrEmpty(selected))
@@ -17,5 +18,5 @@ public class DungeonTile : MonoBehaviour
 
         Vector3 position = transform.position;
         DecorationManager.Instance.PlaceObject(selected, gridPos.x, gridPos.y, position);
-    }
+    }*/
 }

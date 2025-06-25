@@ -20,15 +20,17 @@ public class CorridorFirstDungeonGeneratior : DrunkardsWalkGenerator
     [SerializeField]
     private int editorTestSeed = 12345;
 
-    //Loads the dungeon from savefile*
+/*    //Loads the dungeon from savefile*
     private void Start()
     {
         RunProceduralGeneration();
     }
+*/
     protected override void RunProceduralGeneration()
     {
         // Ensure the seed is initialized from GameManager, with a fallback default seed if null
-        int seed = GameManager.Instance != null ? GameManager.Instance.Seed : editorTestSeed;// Default seed 12345 if null
+        int seed = GameManager.Instance.Seed;
+        DecorationManager.Instance.LoadPlacedObjects(GameManager.Instance.objects);
         rng = new System.Random(seed);
 
         CorridorFirstGeneration(rng);

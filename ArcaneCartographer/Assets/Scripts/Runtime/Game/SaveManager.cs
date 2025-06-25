@@ -65,7 +65,7 @@ public class SaveManager : MonoBehaviour
     {
         string saveString = jsonPath;
 
-        if (saveString != null)
+        if (!string.IsNullOrWhiteSpace(saveString))
         {
             SaveObject saveObject = JsonUtility.FromJson<SaveObject>(saveString);
 
@@ -77,21 +77,11 @@ public class SaveManager : MonoBehaviour
             // Generate dungeon here using the values above
 
             // Load decorations
-            StartCoroutine(DelayedDecorationLoad(saveObject.placedObjects));
-
-            Debug.Log($"Loaded: {saveObject.seed} with {saveObject.placedObjects.Count} decorations");
+            GameManager.Instance.objects = saveObject.placedObjects;
         }
         else
         {
             Debug.Log($"No Save {saveString}");
         }
-    }
-
-    private IEnumerator DelayedDecorationLoad(List<PlacableObjectData> objects)
-    {
-        // Wait one frame so all Awake()s run
-        yield return null;
-
-        DecorationManager.Instance.LoadPlacedObjects(objects);
     }
 }

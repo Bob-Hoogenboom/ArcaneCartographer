@@ -24,6 +24,8 @@ public class GameManager : MonoBehaviour
     public Dictionary<string, Action<string>> valueSetters; //an Action performs and operation but does NOT return anything but takes in a variable*
     private Dictionary<string, Func<string>> valueGetters; //a Func uses methods to compute and return something*
 
+    public List<PlacableObjectData> objects;
+
     //[Header("Getters and Setters")]
     #region Setters and getters
     public int Seed
@@ -64,6 +66,7 @@ public class GameManager : MonoBehaviour
             }
         }
     }
+
     public bool RandomStart
     {
         get => _randomStart;

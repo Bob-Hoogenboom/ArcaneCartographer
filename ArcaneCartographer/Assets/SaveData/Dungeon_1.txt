@@ -1,33 +1,53 @@
 {
-    "seed": 1119062588,
-    "iterations": 10,
-    "walkLength": 10,
+    "seed": 1396838050,
+    "iterations": 30,
+    "walkLength": 30,
     "randomStart": true,
     "placedObjects": [
         {
-            "objectType": "Coin",
-            "x": -1,
-            "y": -1
+            "objectType": "Chest",
+            "x": 24,
+            "y": 2
+        },
+        {
+            "objectType": "Chest",
+            "x": 23,
+            "y": 1
+        },
+        {
+            "objectType": "Chest",
+            "x": 24,
+            "y": 1
         },
         {
             "objectType": "Coin",
-            "x": 0,
-            "y": -2
-        },
-        {
-            "objectType": "Coin",
-            "x": 0,
+            "x": 14,
             "y": -3
         },
         {
             "objectType": "Coin",
-            "x": 0,
-            "y": -6
+            "x": 14,
+            "y": -4
         },
         {
             "objectType": "Coin",
-            "x": 0,
-            "y": -7
+            "x": 15,
+            "y": -4
+        },
+        {
+            "objectType": "Coin",
+            "x": 15,
+            "y": -3
+        },
+        {
+            "objectType": "Coin",
+            "x": 16,
+            "y": -3
+        },
+        {
+            "objectType": "Coin",
+            "x": 16,
+            "y": -2
         }
     ]
 }

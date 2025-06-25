@@ -5462,6 +5462,7 @@ MonoBehaviour:
   _iterations: 10
   _walkLength: 10
   _randomStart: 1
+  objects: []
 --- !u!4 &1104724615
 Transform:
   m_ObjectHideFlags: 0
@@ -6581,7 +6582,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1297412975
 RectTransform:
   m_ObjectHideFlags: 0
@@ -11304,7 +11305,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2105642105
 RectTransform:
   m_ObjectHideFlags: 0

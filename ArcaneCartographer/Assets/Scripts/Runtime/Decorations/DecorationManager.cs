@@ -15,7 +15,10 @@ public class DecorationManager : MonoBehaviour
     public List<ObjectTypeMapping> objectMappings;
     private Dictionary<string, GameObject> prefabDict;
 
-    private List<PlacableObjectData> placedObjects = new List<PlacableObjectData>();
+    public List<PlacableObjectData> placedObjects = new List<PlacableObjectData>();
+    public Dictionary<Vector2Int, GameObject> objectsOnGrid = new();
+    public List<GameObject> currentOBJs = new List<GameObject> ();
+
 
     private void Awake()
     {
@@ -34,9 +37,12 @@ public class DecorationManager : MonoBehaviour
 
     public void PlaceObject(string objectType, int x, int y, Vector3 position)
     {
+        if (objectType == null) return;
+
         if (prefabDict.TryGetValue(objectType, out GameObject prefab))
         {
-            Instantiate(prefab, position, Quaternion.identity);
+            var obj = Instantiate(prefab, position, Quaternion.identity);
+            currentOBJs.Add(obj);
 
             placedObjects.Add(new PlacableObjectData
             {
@@ -44,8 +50,10 @@ public class DecorationManager : MonoBehaviour
                 x = x,
                 y = y
             });
+
         }
     }
+
     public void LoadPlacedObjects(List<PlacableObjectData> objects)
     {
         // Initialize if not already
@@ -69,8 +77,12 @@ public class DecorationManager : MonoBehaviour
         {
             if (prefabDict.TryGetValue(obj.objectType, out GameObject prefab))
             {
+                Vector2Int gridPos = new Vector2Int(obj.x, obj.y);
                 Vector3 worldPos = new Vector3(obj.x, 0, obj.y);
-                Instantiate(prefab, worldPos, Quaternion.identity);
+
+                GameObject decorationOBJ = Instantiate(prefab, worldPos, Quaternion.identity);
+
+                objectsOnGrid[gridPos] = decorationOBJ;
                 placedObjects.Add(obj);
             }
             else
@@ -80,6 +92,23 @@ public class DecorationManager : MonoBehaviour
         }
     }
 
+    public void RemovePlacedObject(GameObject target)
+    {
+        Vector3 pos = target.transform.position;
+        Vector2Int gridPos = new Vector2Int(Mathf.RoundToInt(pos.x), Mathf.RoundToInt(pos.z));
+
+        // Remove from scene
+        Destroy(target);
+
+        // Remove from dictionary
+        if (objectsOnGrid.ContainsKey(gridPos))
+            objectsOnGrid.Remove(gridPos);
+
+        // Remove from saved data
+        placedObjects.RemoveAll(p => p.x == gridPos.x && p.y == gridPos.y);
+
+        Debug.Log($"Removed object at {gridPos}");
+    }
 
     public List<PlacableObjectData> GetPlacedObjects() => placedObjects;
 }
