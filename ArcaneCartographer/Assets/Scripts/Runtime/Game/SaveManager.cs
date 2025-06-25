@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 
@@ -32,16 +34,18 @@ public class SaveManager : MonoBehaviour
             seed = GameManager.Instance.Seed,
             iterations = GameManager.Instance.Iterations,
             walkLength = GameManager.Instance.WalkLength,
-            randomStart = GameManager.Instance.RandomStart
+            randomStart = GameManager.Instance.RandomStart,
+            placedObjects = DecorationManager.Instance.GetPlacedObjects()
         };
-        string json = JsonUtility.ToJson(saveObject);
 
+        string json = JsonUtility.ToJson(saveObject, true); // `true` = pretty print
         SaveSystem.Save(json);
 
         Debug.Log($"Saved: {GameManager.Instance.Seed} containing: " +
-            $"{GameManager.Instance.Iterations} ," +
-            $"{GameManager.Instance.WalkLength} ," +
-            $"{GameManager.Instance.RandomStart}");
+            $"{GameManager.Instance.Iterations}, " +
+            $"{GameManager.Instance.WalkLength}, " +
+            $"{GameManager.Instance.RandomStart}, " +
+            $"Objects placed: {saveObject.placedObjects.Count}");
     }
 
     public void GetFileFromExplorer()
@@ -59,12 +63,9 @@ public class SaveManager : MonoBehaviour
 
     public void LoadFromFile(string jsonPath)
     {
-        //TODO
-        //check json validate
-        //convert jsonpath to save data
         string saveString = jsonPath;
 
-        if(saveString != null)
+        if (saveString != null)
         {
             SaveObject saveObject = JsonUtility.FromJson<SaveObject>(saveString);
 
@@ -73,14 +74,24 @@ public class SaveManager : MonoBehaviour
             GameManager.Instance.WalkLength = saveObject.walkLength;
             GameManager.Instance.RandomStart = saveObject.randomStart;
 
-            Debug.Log($"Loaded: {saveObject.seed} containing: " +
-                $"{saveObject.iterations} ," +
-                $"{saveObject.walkLength} ," +
-                $"{saveObject.randomStart}");
+            // Generate dungeon here using the values above
+
+            // Load decorations
+            StartCoroutine(DelayedDecorationLoad(saveObject.placedObjects));
+
+            Debug.Log($"Loaded: {saveObject.seed} with {saveObject.placedObjects.Count} decorations");
         }
-        else 
+        else
         {
             Debug.Log($"No Save {saveString}");
         }
+    }
+
+    private IEnumerator DelayedDecorationLoad(List<PlacableObjectData> objects)
+    {
+        // Wait one frame so all Awake()s run
+        yield return null;
+
+        DecorationManager.Instance.LoadPlacedObjects(objects);
     }
 }

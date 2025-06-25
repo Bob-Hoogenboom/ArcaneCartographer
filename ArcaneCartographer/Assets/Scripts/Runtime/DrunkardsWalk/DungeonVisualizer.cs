@@ -31,6 +31,10 @@ public class DungeonVisualizer : MonoBehaviour
     {
         Vector3 worldSpace = new Vector3(pos.x, 0, pos.y);
         GameObject currentTile = Instantiate(floorTile, worldSpace, Quaternion.identity);
+        
+        DungeonTile dungeonTile = currentTile.GetComponent<DungeonTile>();
+        dungeonTile.gridPos = pos;
+
         gameObjects.Add(currentTile);    
 
     }

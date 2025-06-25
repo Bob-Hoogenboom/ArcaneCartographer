@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    [Header("SaveFile")]
+    public string savePath;
+
     [Header("Dungeon Variables")]
     [SerializeField]
     private int _seed;

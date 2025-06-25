@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -37,7 +34,7 @@ public class SaveFileUI : MonoBehaviour
 
     public void ToEditorScene(int sceneIndex)
     {
-        SaveManager.Instance.LoadFromFile(_savePath);
+        GameManager.Instance.savePath = _savePath;
         SceneManager.LoadScene(sceneIndex);
     }
 }

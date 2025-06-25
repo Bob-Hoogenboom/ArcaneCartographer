@@ -1,1 +1,33 @@
-{"seed":766461398,"iterations":120,"walkLength":50,"randomStart":true}
+{
+    "seed": 1119062588,
+    "iterations": 10,
+    "walkLength": 10,
+    "randomStart": true,
+    "placedObjects": [
+        {
+            "objectType": "Coin",
+            "x": -1,
+            "y": -1
+        },
+        {
+            "objectType": "Coin",
+            "x": 0,
+            "y": -2
+        },
+        {
+            "objectType": "Coin",
+            "x": 0,
+            "y": -3
+        },
+        {
+            "objectType": "Coin",
+            "x": 0,
+            "y": -6
+        },
+        {
+            "objectType": "Coin",
+            "x": 0,
+            "y": -7
+        }
+    ]
+}

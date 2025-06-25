@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Numerics;
+using UnityEngine;
 
 public class SaveObject
 {
@@ -11,5 +12,5 @@ public class SaveObject
     public bool randomStart;
 
     //objects that have been placed
-
+    public List<PlacableObjectData> placedObjects = new List<PlacableObjectData>();
 }
